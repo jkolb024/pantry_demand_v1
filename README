@@ -52,3 +52,4 @@ to get_fred_variable():
 - Add timestamps to filenames for version tracking
 - Add tests with mock data sources
 - Automatically create separate Excel files for each SNAP variable
+- Logic for predicting school days could be fine tuned more
