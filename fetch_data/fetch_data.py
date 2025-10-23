@@ -1,11 +1,12 @@
-import datetime
+import datetime, os
 from fred_data import get_fred_variable
 from schooldays import get_weekly_schooldays_est
 from snap_data import get_latest_snap_zip
 
 # Update all data sources with one function
 def update_all(start_year = 2015, end_year = None):
-    
+    os.makedirs("data_downloads", exist_ok=True)
+
     # Get all data from 2015 to today by default
     if end_year is None:
         end_year = datetime.date.today().year
