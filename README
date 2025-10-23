@@ -1,0 +1,54 @@
+# Food Pantry Data Automation
+Downloads and processes economic and school-related datasets used for food pantry demand forecasting. It fetches data from public sources (FRED & USDA SNAP) and stores them locally as Excel files.
+
+# Overview:
+- CPI (Consumer Price Index)
+- UER (Unemployment Rate)
+- EMHI (Median Household Income)
+- School Days (weekly estimate of Auburn City Schools instructional days)
+- SNAP Data (USDA participation and cost data)
+
+All output files are saved inside the data_downloads/ directory.
+
+## Installation
+1. Clone or download the project:
+   git clone https://github.com/jkolb024/pantry_demand_v1.git
+
+2. Install dependencies:
+   pip install -r requirements.txt
+
+## Usage
+In Python:
+   from fetch_data import update_all()
+   update_all()
+
+By default, this fetches data from 2015 through the current year.
+
+## Output
+All files are saved in the data_downloads/ folder.
+- CPI.xlsx - Consumer Price Index from FRED
+- UER.xlsx - Unemployment Rate from FRED
+- EMHI.xlsx - Median Household Income from FRED
+- Auburn_Weekly_Schooldays_Estimate.xlsx - Weekly school days estimate
+- SNAP files - Extracted from USDA ZIP archive
+
+## File Descriptions:
+   fetch_data.py - Coordinates all downloads and updates datasets
+   fred_data.py - Retrieves CPI, UER, and EMHI data from FRED
+   schooldays.py - Estimates weekly Auburn school days
+   snap_data.py - Finds and downloads the latest USDA SNAP ZIP file
+
+## Configuration:
+You can change the range of years in the call to update_all():
+- update_all(start_year=2018, end_year=2024)
+
+You can change the range of years and select the specfic variable in the call
+to get_fred_variable():
+- get_fred_variable("cpi", start_year=2013, end_year=2014)
+
+## Future Possible Improvements:
+- Add error handling and logging for failed downloads
+- Validate data completeness before saving
+- Add timestamps to filenames for version tracking
+- Add tests with mock data sources
+- Automatically create separate Excel files for each SNAP variable
