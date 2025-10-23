@@ -4,12 +4,9 @@ from pandas.tseries.holiday import USFederalHolidayCalendar
 # Creates an estimate of the number of weekly school days in the given range
 def get_weekly_schooldays_est(start_year, end_year):
     
-    # Generate all school days (weekdays Mon–Fri) for every school year from August to May
+    # Generate all weekdays from start_year through end_year
     all_days = []
-    for year in range(start_year, end_year): # Loop through each school year
-        school_year_days = pd.date_range(f"{year}-08-07", f"{year+1}-05-22", freq="B")
-        all_days.extend(school_year_days)
-    all_days = pd.DatetimeIndex(all_days)
+    all_days = pd.date_range(f"{start_year}-01-01", f"{end_year}-12-31", freq="B")
 
     # Get all U.S. federal holidays observed dates for holidays
     cal = USFederalHolidayCalendar()
@@ -47,6 +44,9 @@ def get_weekly_schooldays_est(start_year, end_year):
     df = pd.DataFrame({"Day": school_days}) # Wrap in a dateframe for organization
     df["DATE"] = df["Day"] - pd.to_timedelta(df["Day"].dt.weekday, unit="d") # Bring every day of the week back to Monday of that week
     weekly = df.groupby("DATE").size().reset_index(name="Schooldays") # Group all dates that have the same week start together
+    
+    # Remove weeks that start before request start_year
+    weekly = weekly[weekly["DATE"].dt.year >= start_year]
 
     # Remove summer weeks from total
     weekly = weekly[~weekly["DATE"].dt.month.isin([6, 7])]
